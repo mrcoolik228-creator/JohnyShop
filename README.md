@@ -20,43 +20,51 @@
 ## 📐 Визуальная ER-диаграмма базы данных
 
 ```mermaid
-erDiagram
-    CLIENT ||--o{ CUSTOMER_ORDER : "1 to N"
-    CUSTOMER_ORDER ||--|{ ORDER_ITEM : "1 to N"
-    PRODUCT ||--o{ ORDER_ITEM : "1 to N"
+classDiagram
+    Клиент "1" -- "0..*" Заказ : оформляет
+    Заказ "1" -- "1..*" ПозицияЗаказа : включает
+    Товар "1" -- "0..*" ПозицияЗаказа : входит в
 
-    CLIENT {
-        Counter ID_Client PK
-        Text FullName
-        Text Phone
-        Text Email
+    class Клиент {
+        -ID_Клиента
+        -ФИО
+        -Телефон
+        -Email
+        +оформитьЗаказ()
+        +обновитьКонтакты()
     }
 
-    CUSTOMER_ORDER {
-        Counter ID_Order PK
-        Number ID_Client FK
-        DateTime OrderDate
-        Text Status
-        Text DeliveryAddress
+    class Заказ {
+        -ID_Заказа
+        -ID_Клиента
+        -ДатаЗаказа
+        -Статус
+        -АдресДоставки
+        +изменитьСтатус()
+        +рассчитатьСумму()
     }
 
-    PRODUCT {
-        Counter ID_Product PK
-        Text Title
-        Text MerchType
-        Text AnimeTitle
-        Currency Price
-        Number StockQuantity
+    class Товар {
+        -ID_Товара
+        -Название
+        -ТипМерча
+        -АнимеТайтл
+        -Цена
+        -ОстатокНаСкладе
+        +изменитьЦену()
+        +списатьСоСклада()
     }
 
-    ORDER_ITEM {
-        Counter ID_Item PK
-        Number ID_Order FK
-        Number ID_Product FK
-        Number Quantity
-        Currency SalePrice
+    class ПозицияЗаказа {
+        -ID_Позиции
+        -ID_Заказа
+        -ID_Товара
+        -Количество
+        -ЦенаПродажи
+        +рассчитатьСтоимость()
     }
 ```
+
 
 ## 🗂 Структура базы данных (Сущности и атрибуты)
 
